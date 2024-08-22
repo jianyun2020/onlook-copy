@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 function FrameList() {
+  const webviewRef = useRef(null)
+
+  useEffect(() => {
+    const webview = webviewRef.current
+    if (webview) {
+      webview.addEventListener('mouseover', handleMouseOver)
+      webview.addEventListener('mouseout', handleMouseOut)
+      webview.addEventListener('click', handleClick)
+    }
+
+    return () => {
+      if (webview) {
+        webview.removeEventListener('mouseover', handleMouseOver);
+        webview.removeEventListener('mouseout', handleMouseOut);
+        webview.removeEventListener('click', handleClick);
+      }
+    }
+  }, [])
+
+  const handleMouseOver = () => {
+    console.log('Mouse over the webview')
+  }
+
+  const handleMouseOut = () => {
+    console.log('Mouse out of the webview');
+  };
+
+  const handleClick = () => {
+    console.log('Webview clicked');
+  };
+
+
   return (
-    <webview className="w-[100rem] h-[100rem]" src="https://www.framer.com/"></webview>
+    <webview ref={webviewRef} className="w-[100rem] h-[100rem]" src="https://www.framer.com/"></webview>
   )
 }
 
